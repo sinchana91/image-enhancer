@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
  
 @layer base {
   :root {
@@ -73,4 +74,16 @@
   body {
     @apply bg-background text-foreground;
   }
+
+
+.flex-centre {
+  /* Horizontally and vertically center the contents */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth {
+  @apply flex-centre min-h-screen w-full bg-purple-100;
+}
 }
