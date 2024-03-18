@@ -69,12 +69,12 @@
  
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border
   }
   body {
     @apply bg-background text-foreground;
   }
-
+}
 
 .flex-centre {
   /* Horizontally and vertically center the contents */
@@ -86,7 +86,7 @@
 .auth {
   @apply flex-centre min-h-screen w-full bg-purple-100;
 }
-}
+
 
 /* ========================================== TAILWIND STYLES */
 @layer utilities {
