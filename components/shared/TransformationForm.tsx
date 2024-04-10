@@ -29,6 +29,9 @@ import { useState, useTransition } from "react"
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils"
 import { config } from "process"
 import { updateCredits } from "@/lib/actions/user.actions"
+import MediaUploader from "./MediaUploader"
+import TransformedImage from "./TransformedImage"
+import { useRouter } from "next/router"
 
 export const formSchema = z.object({
 title :z.string(),
@@ -47,6 +50,7 @@ const TransformationForm = ({ action, data = null,userId,type,creditBalance,conf
   const [isTransforming,setIsTransforming]=useState(false);
   const [trasformationConfig,setTransformationConfig]=useState(config)
   const [isPending,startTransition]=useTransition()
+  
 
   const initialValues = data && action=='Update' ?{
     title: data?.title,
@@ -98,7 +102,7 @@ const TransformationForm = ({ action, data = null,userId,type,creditBalance,conf
       return onChangeField(value)
      },1000);
     }
-
+    //TODO Return to updateCredits
     const onTransformHandler=  async() => {
       setIsTransforming(true)
 
@@ -197,6 +201,30 @@ const TransformationForm = ({ action, data = null,userId,type,creditBalance,conf
              )}
           </div>
         )}
+        <div className="media-uploader-field">
+            <CustomField 
+              control={form.control}
+              name="publicId"
+              className="flex size-full flex-col"
+              render={({ field }) => (
+                <MediaUploader
+                onValueChange={field.onChange}
+                setImage={setImage}
+                publidId={field.value}
+                image={image}
+                type={type}
+                
+                 />
+                 )}
+            />
+            <TransformedImage
+            image={image}
+            type={type}
+            title={form.getValues().title}
+            setIsTransforming={setIsTransforming}
+            transformationConfig={trasformationConfig} isTransforming={false}              />
+        </div>
+
         <div className='flex flex-col gap-4'>
         <Button 
          type='button'
@@ -207,11 +235,12 @@ const TransformationForm = ({ action, data = null,userId,type,creditBalance,conf
          {isTransforming ? 'Transforming...': 'Apply Transformation'
          }
           </Button>
-        </div>
-        <Button type='submit'
+          <Button type='submit'
          className="submit-button capitalize"
          disabled={isSubmitting}
-         >Sumbit</Button>
+         >{isSubmitting ? 'Submitting...' : 'Save Image'}</Button>
+        </div>
+        
       </form>
     </Form>
   )
