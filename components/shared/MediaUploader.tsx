@@ -1,6 +1,8 @@
 "use client"
+
+
 import { useToast } from "@/components/ui/use-toast"
-import React from 'react'
+
 import { CldImage, CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
 // import { getImageSize } from "next/dist/server/image-optimizer"
@@ -11,7 +13,7 @@ import { PlaceholderValue } from "next/dist/shared/lib/get-img-props"
 type MediaUploaderProps = {
   onValueChange: (value: string) => void;
   setImage:React.Dispatch<any>;
-  publidId:string;
+  publicId:string;
   image:any;
   type:string;
 
@@ -24,30 +26,29 @@ const MediaUploader=({
   image,
   publicId,
   type
-
-
-}:MediaUploaderProps) =>{
+}: MediaUploaderProps) =>{
     const { toast } = useToast()
-    const onUploadSuccessHandler = (result:any) => {
+
+    const onUploadSuccessHandler = (result: any) => {
+    setImage((prevState: any) => ({
+      ...prevState,
+      publicId: result?.info?.public_id,
+      width: result?.info?.width,
+      height: result?.info?.height,
+      secureURL: result?.info?.secure_url
+    }))
+
+    onValueChange(result?.info?.public_id)
+
       toast({
         title:'Image uploaded successfully' ,
         description:'1 credit was deducted from your account',
         duration:5000,
-        className:'error-toast  '
-        
-
-      })
+        className:'success-toast '
+        })
     }
     const onUploadErrorHandler = (result:any) => {
-      setImage((prevState:any) =>({
-        ...prevState,
-        publicId:result?.info?.public_id,
-        width:result?.info?.width,
-        height:result?.info?.height,
-        secureUrl:result?.info?.secure_url,
-      }))
-
-      onValueChange(result?.info?.public_id)
+      
 
       toast({
         title:'Something went wrong while uploading ' ,
@@ -88,8 +89,7 @@ const MediaUploader=({
             </div>
           </>
           ) : (
-            <div className="media-uploader_cta" onClick=
-            {()=>open()}>
+            <div className="media-uploader_cta" onClick={()=>open()}>
               <div className="media-uploader_cta-image">
                   <Image
                     src="/assests/icons/add.svg"
@@ -99,10 +99,9 @@ const MediaUploader=({
                     />
                      </div>
                     <p className="p-14-medium">Click here to upload the image</p>
-             
-
-              HERE IS NO IMAGE
-            </div>)}
+                 
+            </div>
+            )}
         </div>
       )}
       </CldUploadWidget >
