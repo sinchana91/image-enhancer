@@ -1,3 +1,5 @@
+"use client"
+
 import { dataUrl, download ,debounce,getImageSize} from '@/lib/utils'
 import React from 'react'
 import Image from 'next/image'
@@ -9,6 +11,8 @@ import { title } from 'process'
 const TransformedImage = ({image,type,title,transformationConfig,isTransforming,setIsTransforming,hasDownload=false}:TransformedImageProps) => {
     const downloadHandler = (e:React.MouseEvent<HTMLButtonElement,MouseEvent>) => {
         e.preventDefault();
+
+        
         download(getCldImageUrl({
             width:image?.width,
             height:image?.height,
