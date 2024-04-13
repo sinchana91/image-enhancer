@@ -34,6 +34,7 @@ import TransformedImage from "./TransformedImage"
 import { useRouter } from "next/navigation"
 import { getCldImageUrl } from "next-cloudinary"
 import { addImage, updateImage } from "@/lib/actions/image.actions"
+import { InsufficientCreditsModal } from "./InsufficientCreditsModel"
 // import { InsufficientCreditsModal } from "./InsufficientCreditsModal"
 
 export const formSchema = z.object({
@@ -88,7 +89,7 @@ const TransformationForm = ({ action, data = null,userId,type,creditBalance,conf
         width:image.width,
         height:image.height,
         config:trasformationConfig,
-        secureURL:image?.secureUrl,
+        secureURL:image?.secureURL,
         transformationURL:transformationUrl,
         aspectRatio:values.aspectRatio,
         prompt:values.prompt,
@@ -179,42 +180,50 @@ const TransformationForm = ({ action, data = null,userId,type,creditBalance,conf
       })
     }
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <CustomField
-        control={form.control}
-        name="title"
-        formLabel="Image Title"
-        className="w-full"
-        render={({field})=><Input {...field} className="input-field"/>}
-        />
-        {type === 'fill' && (
+    useEffect(()=>{
+      if(image && (type==='restore' || type==='removeBackground' )){
+        setNewTransformation(transformationType.config)
+      }
+     
+    },[image,transformationType.config,type])
+
+    return (
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {creditBalance<Math.abs(creditFee) && <InsufficientCreditsModal/>}
           <CustomField
-            control={form.control}
-            name="aspectRatio"
-            formLabel="Aspect Ratio"
-            className="w-full"
-            render={({ field }) => (
-              <Select
-              onValueChange={( value: string )=> onSelectFieldHandler(value,field.onChange)}
-                // value={field.value}
-              >
-                <SelectTrigger className="select-field">
-                  <SelectValue placeholder="Select size" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.keys(aspectRatioOptions).map((key) => (
-                    <SelectItem key={key} value={key} className="select-item">
-                      {aspectRatioOptions[key as AspectRatioKey].label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}  
+          control={form.control}
+          name="title"
+          formLabel="Image Title"
+          className="w-full"
+          render={({field})=><Input {...field} className="input-field"/>}
           />
-        )}
-        
+          {type === 'fill' && (
+            <CustomField
+              control={form.control}
+              name="aspectRatio"
+              formLabel="Aspect Ratio"
+              className="w-full"
+              render={({ field }) => (
+                <Select
+                onValueChange={( value: string )=> onSelectFieldHandler(value,field.onChange)}
+                  // value={field.value}
+                >
+                  <SelectTrigger className="select-field">
+                    <SelectValue placeholder="Select size" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.keys(aspectRatioOptions).map((key) => (
+                      <SelectItem key={key} value={key} className="select-item">
+                        {aspectRatioOptions[key as AspectRatioKey].label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}  
+            />
+          )}
+          
         {(type ==='remove' || type === 'recolor') && (
           <div className='prompt-field'>
             <CustomField
