@@ -161,7 +161,7 @@ const TransformationForm = ({ action, data = null,userId,type,creditBalance,conf
           [fieldName==='prompt' ? 'prompt' :'to']:value
         }
       }))
-    },1000);
+    },1000)();
       return onChangeField(value)
      
     }
