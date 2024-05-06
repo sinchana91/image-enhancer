@@ -61,7 +61,7 @@ const MediaUploader=({
     }
   return (
     <CldUploadWidget 
-      uploadPreset="jsm_image_enhancer"
+      uploadPreset="jsm_image_enahncer"
       options={{
         multiple:false,
         resourceType:"image",

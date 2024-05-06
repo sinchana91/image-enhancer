@@ -114,7 +114,7 @@ export async function getAllImages({limit=9,page=1,searchQuery=''}:{
             secure:true
         })
 
-       let expression='folder=image_enhancer';
+       let expression='folder=IMAGE-ENHANCER';
         if(searchQuery){
             expression+=` AND ${searchQuery}`
         }
