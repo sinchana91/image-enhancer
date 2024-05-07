@@ -19,8 +19,8 @@ export async function addImage({image,userId,path}:
     AddImageParams){
         try{
             await connectToDatabase();
-            const author=await Image.findById(userId);
-            
+            const author=await User.findById(userId);
+            console.log(author)
             if(!author){
                 throw new Error("Author not found")
             }
