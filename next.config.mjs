@@ -8,10 +8,6 @@ const nextConfig = {
             port: ''
         }]
     },
-    experimental: {
-        serverComponents: true, // Enable Server Components
-        serverComponentsMiddleware: true, // Enable Middleware for Server Components
-    },
 };
 
 export default nextConfig;
