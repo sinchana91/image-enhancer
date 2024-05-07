@@ -84,10 +84,10 @@ const TransformationForm = ({ action, data = null,userId,type,creditBalance,conf
 
       const imageData={
         title:values.title,
-        publicId:image.publicId,
+        publicId:image?.publicId,
         transformationType:type,
-        width:image.width,
-        height:image.height,
+        width:image?.width,
+        height:image?.height,
         config:trasformationConfig,
         secureURL:image?.secureURL,
         transformationURL:transformationUrl,

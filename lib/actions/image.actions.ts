@@ -15,11 +15,10 @@ const populateUser=(query:any)=>query.populate({
 })
 
 //ADD IMAGE TO DB
-export async function addImage({image,userId,path}:
-    AddImageParams){
+export async function addImage({image,userId,path}:AddImageParams){
         try{
             await connectToDatabase();
-            const author=await Image.findById(userId);
+            const author=await User.findById(userId);
             
             if(!author){
                 throw new Error("Author not found")
@@ -40,12 +39,12 @@ export async function addImage({image,userId,path}:
 
 
 //UPDATE IMAGE IN DB
-export async function updateImage({image,userId,path}:
-    UpdateImageParams){
+export async function updateImage({image,userId,path}:UpdateImageParams){
         try{
             await connectToDatabase();
 
             const imageToUpdate=await Image.findById(image._id);
+            
             if(!imageToUpdate|| imageToUpdate.author.toHexString()!==userId){
                 throw new Error("Unauthorized orImage not found")
             }
